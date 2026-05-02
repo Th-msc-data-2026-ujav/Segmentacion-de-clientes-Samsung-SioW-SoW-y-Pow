@@ -1,0 +1,9 @@
+survey-data/
+*.pdf
+*.Rproj
+
+.Rhistory
+.RData
+.Rproj.user/
+
+.ipynb_checkpoints/
