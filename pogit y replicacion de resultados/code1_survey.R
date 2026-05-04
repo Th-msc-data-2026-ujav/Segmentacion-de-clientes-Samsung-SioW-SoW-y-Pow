@@ -7,23 +7,37 @@
 #-----------------------------------------------------------------------------
 
 packages <- unique(c(
-  "tidyverse", "lubridate", "janitor", "skimr", "snakecase",
-  "stringr", "dplyr", "gridExtra", "scales", "viridis",
-  "patchwork", "fastDummies", "readxl", "openxlsx", "tidymodels",
-  "Matrix", "caret", "pscl", "xgboost", "Metrics",
-  "numDeriv", "optimParallel", "parallel", "furrr", "progressr",
-  "tibble", "readr", "forcats", "ggplot2", "tidyr"
-))
+    "tidyverse", "lubridate", "janitor", "skimr", "snakecase",
+    "stringr", "dplyr", "gridExtra", "scales", "viridis",
+    "patchwork", "fastDummies", "readxl", "openxlsx", "tidymodels",
+    "Matrix", "caret", "pscl", "xgboost", "Metrics",
+    "numDeriv", "optimParallel", "parallel", "furrr", "progressr",
+    "tibble", "readr", "forcats", "ggplot2", "tidyr"
+  ))
 
+# Instalar paquetes faltantes
+packages_to_install <- setdiff(packages, rownames(installed.packages()))
+packages_to_install <- setdiff(packages_to_install, "parallel")
+
+if (length(packages_to_install) > 0) {
+  install.packages(packages_to_install, dependencies = TRUE)
+}
+
+# Cargar paquetes
 load_pkg <- function(pkgs) {
   ok <- vapply(pkgs, function(p) {
     suppressPackageStartupMessages(require(p, character.only = TRUE))
   }, logical(1))
+  
   if (any(!ok)) {
     stop("Packages not installed/loaded: ", paste(pkgs[!ok], collapse = ", "))
+  } else {
+    message("Todos los paquetes fueron cargados correctamente.")
   }
+  
   invisible(ok)
 }
+
 load_pkg(packages)
 
 #-----------------------------------------------------------------------------

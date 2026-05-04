@@ -31,7 +31,31 @@ packages <- c(
   "fastDummies","openxlsx","caret",
   "tidymodels"
 )
-invisible(lapply(packages, require, character.only = TRUE))
+# Instalar paquetes faltantes
+packages_to_install <- setdiff(packages, rownames(installed.packages()))
+packages_to_install <- setdiff(packages_to_install, "parallel")
+
+if (length(packages_to_install) > 0) {
+  install.packages(packages_to_install, dependencies = TRUE)
+}
+
+# Cargar paquetes
+load_pkg <- function(pkgs) {
+  ok <- vapply(pkgs, function(p) {
+    suppressPackageStartupMessages(require(p, character.only = TRUE))
+  }, logical(1))
+  
+  if (any(!ok)) {
+    stop("Packages not installed/loaded: ", paste(pkgs[!ok], collapse = ", "))
+  } else {
+    message("Todos los paquetes fueron cargados correctamente.")
+  }
+  
+  invisible(ok)
+}
+
+load_pkg(packages)
+
 
 #-----------------------------------------------------------------------------
 # Helpers: Tukey cap (solo arriba) + aplicar cap fijo + winsor TRAIN-only
@@ -502,13 +526,16 @@ rfm_amount_2018_2023b <- rfm_amount_2018_2023b %>%
 #-----------------------------------------------------------------------------
 # Merge survey_enriched (se asume ya existe en tu flujo)
 #-----------------------------------------------------------------------------
+
 cols_drop <- c(
-  "duration_in_seconds","q_prolific_mturk","q_control","q_altruism",
-  "q_bonus_05","q_bonus_20","q_bonus_50",
-  "q_data_value_100","q_data_value_any","q_data_value_any_1_text",
-  "q_sell_your_data","q_sell_consumer_data","q_small_biz_use","q_census_use",
-  "q_research_society","q_attn_check","showdata","incentive","connect",
-  "q_demos_race","q_life_changes","q_demos_state","recorded_date"
+  "q_demos_race",
+  "q_life_changes",
+  "q_demos_state",
+  "q_sell_your_data",
+  "q_sell_consumer_data",
+  "q_small_biz_use",
+  "q_census_use",
+  "q_research_society"
 )
 
 valid_ids <- rfm_amount_2018_2023b %>%
