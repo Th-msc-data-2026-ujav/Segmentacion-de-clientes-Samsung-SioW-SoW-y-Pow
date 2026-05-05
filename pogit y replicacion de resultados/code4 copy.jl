@@ -1,10 +1,18 @@
 using Pkg
-Pkg.activate(raw"C:\Users\workw\Documents\Proyecto aplicado\Github\pogit")
+
+# Carpeta donde está este archivo .jl
+ROOT = @__DIR__
+
+# Activar el proyecto ubicado en la carpeta actual
+Pkg.activate(ROOT)
+
 Pkg.add(["DataFrames", "CSV", "XLSX", "Distributions", "StatsBase", "LoopVectorization"])
 Pkg.instantiate()
 
-cd(@__DIR__)
-println(pwd())
+# Moverse a la carpeta actual
+cd(ROOT)
 
-include("fit_and_predict1.jl")
-include("fit_and_predict2.jl")
+println("Carpeta actual: ", pwd())
+
+include(joinpath(ROOT, "fit_and_predict1.jl"))
+include(joinpath(ROOT, "fit_and_predict2.jl"))

@@ -1,9 +1,14 @@
 survey-data/
 *.pdf
 *.Rproj
+*.xlsx
+*.toml
 
 .Rhistory
 .RData
 .Rproj.user/
+EMPogit.jl/
+matrices/
+.RDataTmp
 
 .ipynb_checkpoints/

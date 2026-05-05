@@ -39,7 +39,13 @@ end
 ############################################################
 # 2) RUTAS
 ############################################################
-data_dir = raw"C:\Users\workw\Documents\Proyecto aplicado\Github\pogit\matrices"
+# Carpeta donde está este archivo .jl
+ROOT = @__DIR__
+
+# Carpeta matrices dentro de la carpeta actual
+data_dir = joinpath(ROOT, "matrices")
+
+@assert isdir(data_dir) "No existe la carpeta matrices en: $(data_dir)"
 
 # TRAIN
 x1_train_path = joinpath(data_dir, "W_train.csv")

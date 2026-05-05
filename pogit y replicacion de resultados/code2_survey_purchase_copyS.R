@@ -582,11 +582,11 @@ data_dum <- survey_enriched2 %>%
       "q_demos_income",
       "q_demos_gender",
       "q_sexual_orientation",
-      "q_substance_use_1",
-      "q_substance_use_2",
-      "q_substance_use_3",
-      "q_personal_1",
-      "q_personal_2",
+      "q_substance_use_cigarettes",
+      "q_substance_use_marijuana",
+      "q_substance_use_alcohol",
+      "q_personal_diabetes",
+      "q_personal_wheelchair",
       "q_amazon_use_howmany",
       "q_amazon_use_hh_size"
     ),
@@ -1731,7 +1731,7 @@ openxlsx::writeData(wb, "Y_train", as.data.frame(Y_train))
 openxlsx::addWorksheet(wb, "Y_test")
 openxlsx::writeData(wb, "Y_test", as.data.frame(Y_test))
 
-openxlsx::saveWorkbook(wb, file = "C:/Users/workw/Documents/Proyecto aplicado/Github/pogit", overwrite = TRUE)
+openxlsx::saveWorkbook(wb, file = "C:/Users/workw/Documents/Proyecto aplicado/Github/Segmentacion-de-clientes-Samsung-SioW-SoW-y-Pow/pogit/matrices_data.xlsx", overwrite = TRUE)
 
 
 
