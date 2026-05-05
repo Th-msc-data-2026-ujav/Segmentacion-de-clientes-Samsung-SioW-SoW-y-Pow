@@ -1731,8 +1731,11 @@ openxlsx::writeData(wb, "Y_train", as.data.frame(Y_train))
 openxlsx::addWorksheet(wb, "Y_test")
 openxlsx::writeData(wb, "Y_test", as.data.frame(Y_test))
 
-openxlsx::saveWorkbook(wb, file = "C:/Users/workw/Documents/Proyecto aplicado/Github/Segmentacion-de-clientes-Samsung-SioW-SoW-y-Pow/pogit/matrices_data.xlsx", overwrite = TRUE)
-
+openxlsx::saveWorkbook(
+  wb,
+  file = "matrices_data.xlsx",
+  overwrite = TRUE
+)
 
 
 
