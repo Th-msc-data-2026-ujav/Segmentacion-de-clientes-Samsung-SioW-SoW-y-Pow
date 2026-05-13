@@ -736,6 +736,21 @@ wheels = [
 ]
 
 [[package]]
+name = "gower"
+version = "0.1.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "scipy", version = "1.13.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
+    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.10.*'" },
+    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7c/b8/f02ffa72009105e981b21fe957895107d1b3c81dece43167d28d8acfdfb0/gower-0.1.2.tar.gz", hash = "sha256:34ddb5158f0e8bfba093dca06b9f887bda244998d10af2a3ad8c74a6efa1b5f6", size = 5637, upload-time = "2022-11-13T20:23:20.493Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/99/23/88b526457ea992e0a47147a886db3d749d07347c8d3a303f6076deee7299/gower-0.1.2-py3-none-any.whl", hash = "sha256:cb46e18243e1d88d2fa0a23d20afb71e5469f25db4ee6236db40f897dfea9e6f", size = 5168, upload-time = "2022-11-13T20:23:18.387Z" },
+]
+
+[[package]]
 name = "idna"
 version = "3.13"
 source = { registry = "https://pypi.org/simple" }
@@ -2986,6 +3001,7 @@ name = "segmentacion"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "gower" },
     { name = "ipykernel", version = "6.31.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
     { name = "ipykernel", version = "7.2.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
     { name = "ipython", version = "8.18.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
@@ -3009,6 +3025,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "gower", specifier = ">=0.1.2" },
     { name = "ipykernel", specifier = ">=6.31.0" },
     { name = "ipython", specifier = ">=8.18.1" },
     { name = "matplotlib", specifier = ">=3.9.4" },
