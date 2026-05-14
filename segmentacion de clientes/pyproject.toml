@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
     "gower>=0.1.2",
+    "hdbscan>=0.8.42",
     "ipykernel>=6.31.0",
     "ipython>=8.18.1",
     "matplotlib>=3.9.4",
