@@ -21,3 +21,10 @@ readr::write_csv(
   tibble::tibble(response_id = test_ids),
   "test_ids.csv"
 )
+
+
+openxlsx::write.xlsx(
+  results_chi_fisher_train,
+  file = "results_chi_fisher_train.xlsx",
+  overwrite = TRUE
+)
