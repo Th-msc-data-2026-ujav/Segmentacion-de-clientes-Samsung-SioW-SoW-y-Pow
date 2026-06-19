@@ -102,7 +102,11 @@ end
 ############################################################
 # 3.1) SELECCIÓN DE VARIABLES (ÚNICO CAMBIO VS CODE4)
 ############################################################
+############################################################
+# 3.1) SELECCIÓN DE VARIABLES POR NOMBRE/PREFIJO
+############################################################
 
+# X1: componente SoW
 X1_KEEP_VARS = [
     "Intercept",
     "recency_days_2018_Apple",
@@ -110,41 +114,81 @@ X1_KEEP_VARS = [
     "monetary_2018_Apple"
 ]
 
-X2_KEEP_VARS = [
-    "Intercept",
-
-    # Life
-    "life_lost_a_job",
-    "life_moved_place_of_residence",
-    "life_divorce",
-    "life_had_a_child",
-    "life_became_pregnant",
-
-    # Income
-    "q_demos_income_50_000_74_999",
-    "q_demos_income_75_000_99_999",
-    "q_demos_income_100_000_149_999",
-    "q_demos_income_150_000_or_more",
-    "q_demos_income_Less_than_25_000",
-    "q_demos_income_Prefer_not_to_say",
-
-    # Amazon use
-    "q_amazon_use_howmany_2",
-    "q_amazon_use_howmany_3",
-    "q_amazon_use_howmany_4_"
+# X2: componente SioW / perfilamiento
+X2_PREFIXES = [
+    "race_",
+    "life_",
+    "q_demos_age_",
+    "q_demos_income_",
+    "q_amazon_use_howmany_",
+    "q_demos_education_",
+    "q_amazon_use_how_oft_",
+    "q_amazon_use_hh_size_"
 ]
+
+X2_EXTRA_VARS = [
+    "Intercept",
+    "n_states"
+]
+
+function select_by_prefix(df::DataFrame, prefixes::Vector{String})
+    vars = String[]
+    
+    for nm in names(df)
+        nm_str = String(nm)
+        if any(startswith(nm_str, pref) for pref in prefixes)
+            push!(vars, nm_str)
+        end
+    end
+    
+    return vars
+end
 
 function apply_covariate_selection!(
     X1_df::DataFrame,
     X2_df::DataFrame
 )
+    # ----------------------------
+    # X1: selección fija
+    # ----------------------------
     miss1 = setdiff(X1_KEEP_VARS, names(X1_df))
-    miss2 = setdiff(X2_KEEP_VARS, names(X2_df))
-
     @assert isempty(miss1) "Faltan variables en X1: $(miss1)"
-    @assert isempty(miss2) "Faltan variables en X2: $(miss2)"
 
-    return X1_df[:, X1_KEEP_VARS], X2_df[:, X2_KEEP_VARS]
+    X1_selected = X1_df[:, X1_KEEP_VARS]
+
+    # ----------------------------
+    # X2: selección por prefijos
+    # ----------------------------
+    x2_prefix_vars = select_by_prefix(X2_df, X2_PREFIXES)
+
+    x2_keep = vcat(
+        ["Intercept"],
+        x2_prefix_vars,
+        ["n_states"]
+    )
+
+    # Quitar duplicados manteniendo orden
+    x2_keep = unique(x2_keep)
+
+    # Mantener solo columnas existentes
+    x2_keep = [v for v in x2_keep if v in names(X2_df)]
+
+    # Chequeos mínimos
+    @assert "Intercept" in x2_keep "Falta Intercept en X2."
+    @assert length(x2_prefix_vars) > 0 "No se encontró ninguna variable por prefijo en X2."
+    
+    if !("n_states" in names(X2_df))
+        @warn "n_states no está en X2. El modelo se ajustará sin esta variable."
+    end
+
+    X2_selected = X2_df[:, x2_keep]
+
+    println("Variables seleccionadas en X1: ", names(X1_selected))
+    println("Número de variables X2 seleccionadas: ", ncol(X2_selected))
+    println("Variables seleccionadas en X2:")
+    println(names(X2_selected))
+
+    return X1_selected, X2_selected
 end
 
 ############################################################
